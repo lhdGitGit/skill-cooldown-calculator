@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>技能急速冷却计算器</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+      background-color: #1e1e1e;
+      color: #e0e0e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #2c2c2c;
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      text-align: center;
+      width: 320px;
+      min-height: 280px; /* 固定高度，避免被顶起 */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 15px;
+    }
+    h1 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #555;
+      background-color: #3a3a3a;
+      color: #e0e0e0;
+      font-size: 16px;
+      text-align: center;
+      transition: border 0.2s, box-shadow 0.2s;
+      -moz-appearance: textfield; /* Firefox 去掉上下箭头 */
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none; /* Chrome 去掉上下箭头 */
+      margin: 0;
+    }
+    input:focus {
+      outline: none;
+      border-color: #6a9fb5;
+      box-shadow: 0 0 6px #6a9fb5;
+    }
+    #result {
+      font-size: 16px;
+      color: #cfd8dc;
+      min-height: 40px; /* 保证占位，避免布局跳动 */
+      white-space: pre-line;
+      transition: opacity 0.3s;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>英雄联盟技能急速计算器</h1>
+    <input id="baseCD" type="number" placeholder="原始冷却时间 (秒)" min="0" />
+    <input id="haste" type="number" placeholder="技能急速" min="0" />
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const baseCDInput = document.getElementById('baseCD');
+    const hasteInput = document.getElementById('haste');
+    const resultDiv = document.getElementById('result');
+
+    function calculateCooldown() {
+      const baseCD = parseFloat(baseCDInput.value);
+      const haste = parseFloat(hasteInput.value);
+
+      if (isNaN(baseCD) || isNaN(haste) || baseCD <= 0 || haste < 0) {
+        resultDiv.innerText = '';
+        return;
+      }
+
+      // 技能急速直接作为数值，无百分比
+      const actualCD = baseCD / (1 + haste);
+      const reductionPercent = (1 - 1 / (1 + haste)) * 100;
+
+      resultDiv.innerText = `实际冷却时间：${actualCD.toFixed(2)} 秒\n冷却减少：${reductionPercent.toFixed(1)}%`;
+    }
+
+    // 实时监听输入
+    baseCDInput.addEventListener('input', calculateCooldown);
+    hasteInput.addEventListener('input', calculateCooldown);
+  </script>
+</body>
+</html>
