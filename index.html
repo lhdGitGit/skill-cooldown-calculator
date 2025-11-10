@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>英雄联盟技能急速计算器</title>
   <link rel="icon" type="image/x-icon" href="test.ico">
   <style>
@@ -100,7 +100,16 @@
     // 实时监听输入
     baseCDInput.addEventListener('input', calculateCooldown);
     hasteInput.addEventListener('input', calculateCooldown);
+
+    // 只有在点击（focus）“原始冷却时间”输入框时，才清空所有输入和结果
+    function clearAll() {
+      baseCDInput.value = '';
+      hasteInput.value = '';
+      resultDiv.innerText = '';
+    }
+
+    baseCDInput.addEventListener('focus', clearAll);
+    // 注意：haste 输入框不绑定 clear 事件，因此点击 haste 不会清空内容
   </script>
 </body>
 </html>
-
